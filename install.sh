@@ -7,11 +7,14 @@ CODEX_HOME="${1:-$HOME/.codex}"
 SOURCE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_HOOK="$SOURCE_ROOT/hooks/codex_terminal_state.sh"
 SOURCE_HOOKS_JSON="$SOURCE_ROOT/hooks.arch.json"
+SOURCE_LAUNCHER="$SOURCE_ROOT/bin/codex-terminal-state"
 
 HOOKS_DIR="$CODEX_HOME/hooks"
 TARGET_HOOK="$HOOKS_DIR/codex_terminal_state.sh"
 TARGET_HOOKS_JSON="$CODEX_HOME/hooks.json"
 TARGET_CONFIG="$CODEX_HOME/config.toml"
+TARGET_BIN_DIR="${XDG_BIN_HOME:-$HOME/.local/bin}"
+TARGET_LAUNCHER="$TARGET_BIN_DIR/codex-terminal-state"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 
 backup_if_exists() {
@@ -22,6 +25,7 @@ backup_if_exists() {
 }
 
 mkdir -p "$HOOKS_DIR"
+mkdir -p "$TARGET_BIN_DIR"
 
 backup_if_exists "$TARGET_HOOK"
 cp "$SOURCE_HOOK" "$TARGET_HOOK"
@@ -29,6 +33,10 @@ chmod +x "$TARGET_HOOK"
 
 backup_if_exists "$TARGET_HOOKS_JSON"
 cp "$SOURCE_HOOKS_JSON" "$TARGET_HOOKS_JSON"
+
+backup_if_exists "$TARGET_LAUNCHER"
+cp "$SOURCE_LAUNCHER" "$TARGET_LAUNCHER"
+chmod +x "$TARGET_LAUNCHER"
 
 if [[ ! -f "$TARGET_CONFIG" ]]; then
     : > "$TARGET_CONFIG"
@@ -124,4 +132,6 @@ END {
 mv "$TMP_CONFIG" "$TARGET_CONFIG"
 
 printf 'Installed Codex terminal state hooks for Arch/Linux.\n'
-printf 'Ready = blue, working = black. Restart Codex with: codex\n'
+printf 'Ready = blue, working = your default terminal colors.\n'
+printf 'Terminal colors reset on exit when launched through the wrapper.\n'
+printf 'Launch with: %s\n' "$TARGET_LAUNCHER"

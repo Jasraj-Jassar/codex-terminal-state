@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+HOOK_SCRIPT="${CODEX_TERMINAL_STATE_HOOK:-$HOME/.codex/hooks/codex_terminal_state.sh}"
+
+if ! REAL_CODEX="$(command -v codex)"; then
+    printf 'codex-terminal-state: could not find `codex` in PATH\n' >&2
+    exit 127
+fi
+
+cleanup() {
+    if [[ -x "$HOOK_SCRIPT" ]]; then
+        "$HOOK_SCRIPT" reset >/dev/null 2>&1 || true
+    fi
+}
+
+trap cleanup EXIT INT TERM
+
+"$REAL_CODEX" "$@"

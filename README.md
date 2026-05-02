@@ -5,7 +5,7 @@ A tiny Codex CLI helper for Windows and Arch Linux.
 It changes your terminal so you can tell what Codex is doing at a glance:
 
 - Ready: blue terminal, `CODEX READY - BLUE`
-- Working: black terminal, `CODEX WORKING - BLACK`
+- Working: your normal terminal colors
 
 ## Install
 
@@ -22,16 +22,18 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "if (Test-Path .\code
 Open a terminal, paste this whole line, and press Enter:
 
 ```bash
-if [ -d ./codex-terminal-state ]; then cd ./codex-terminal-state && git pull; else git clone https://github.com/Jasraj-Jassar/codex-terminal-state.git codex-terminal-state && cd ./codex-terminal-state; fi && chmod +x ./install.sh ./hooks/codex_terminal_state.sh && ./install.sh && codex
+if [ -d ./codex-terminal-state ]; then cd ./codex-terminal-state && git pull; else git clone https://github.com/Jasraj-Jassar/codex-terminal-state.git codex-terminal-state && cd ./codex-terminal-state; fi && chmod +x ./install.sh ./hooks/codex_terminal_state.sh ./bin/codex-terminal-state && ./install.sh && ~/.local/bin/codex-terminal-state
 ```
 
-That downloads or updates the repo, installs the hook for your OS, then starts Codex.
+That downloads or updates the repo, installs the hook for your OS, installs a launcher at `~/.local/bin/codex-terminal-state`, then starts Codex through that launcher.
 
 ## Arch Notes
 
 These instructions are for Arch and Arch-based systems that run Codex inside a normal ANSI-capable terminal such as Kitty, Alacritty, GNOME Terminal, Konsole, WezTerm, or similar.
 
 The Linux hook writes terminal color and title changes through `/dev/tty`, so it expects Codex to be attached to a real terminal session.
+
+Use `~/.local/bin/codex-terminal-state` when you want the terminal to reset to your default colors after Codex exits.
 
 ## What It Changes
 
@@ -69,6 +71,7 @@ Hook logs go here:
 
 - `install.ps1`: Windows installer
 - `install.sh`: Arch/Linux installer
+- `bin/codex-terminal-state`: Arch/Linux launcher that resets terminal colors on exit
 - `hooks.json`: Windows hook configuration
 - `hooks.arch.json`: Arch/Linux hook configuration
 - `hooks/codex_terminal_state.ps1`: Windows terminal hook

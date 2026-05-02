@@ -20,9 +20,10 @@ case "$STATE" in
         title="CODEX READY - BLUE"
         sequence=$'\033]11;#002B7F\a\033]12;#FFFFFF\a\033]0;CODEX READY - BLUE\a\033]2;CODEX READY - BLUE\a\033[97;44m'
         ;;
-    busy)
-        title="CODEX WORKING - BLACK"
-        sequence=$'\033]11;#000000\a\033]12;#FFFFFF\a\033]0;CODEX WORKING - BLACK\a\033]2;CODEX WORKING - BLACK\a\033[97;40m'
+    busy|reset)
+        title="CODEX"
+        # Reset terminal colors back to the user's defaults while keeping the title updated.
+        sequence=$'\033]111\a\033]112\a\033]0;CODEX\a\033]2;CODEX\a\033[0m\033[39;49m'
         ;;
     *)
         write_log "ignored invalid state"
