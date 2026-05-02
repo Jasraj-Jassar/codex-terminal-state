@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -lc '\"$HOME/.codex/hooks/codex_terminal_state.sh\" start-ready'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -lc '\"$HOME/.codex/hooks/codex_terminal_state.sh\" busy'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -lc '\"$HOME/.codex/hooks/codex_terminal_state.sh\" ready'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
